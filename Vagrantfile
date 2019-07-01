@@ -12,10 +12,8 @@ Vagrant.configure(2) do |config|
     master.vm.box = "ubuntu/bionic64"
     master.vm.box_version = "20190612.0.0"
     master.vm.hostname = "master.dojot.com.br"
-    master.vm.network "private_network", ip: "172.42.42.100"
-    master.vm.network "forwarded_port", guest: 8000, host: 8080
+    master.vm.network "private_network", ip: "192.168.33.10"
     master.vm.network "forwarded_port", guest: 1883, host: 1883
-    master.vm.network "forwarded_port", guest: 8883, host: 8883
     master.vm.provider "virtualbox" do |v|
       v.name = "master"
       v.memory = 2048
@@ -24,7 +22,7 @@ Vagrant.configure(2) do |config|
     master.vm.provision "shell", path: "bootstrap_master.sh"
   end
 
-  NodeCount = 2
+  NodeCount = 1
 
   # Kubernetes Worker Nodes
   (1..NodeCount).each do |i|
@@ -32,7 +30,7 @@ Vagrant.configure(2) do |config|
       workernode.vm.box = "ubuntu/bionic64"
       workernode.vm.box_version = "20190612.0.0"
       workernode.vm.hostname = "worker#{i}.example.com"
-      workernode.vm.network "private_network", ip: "172.42.42.10#{i}"
+      workernode.vm.network "private_network", ip: "192.168.33.1#{i}"
       workernode.vm.provider "virtualbox" do |v|
         v.name = "worker#{i}"
         v.memory = 2048

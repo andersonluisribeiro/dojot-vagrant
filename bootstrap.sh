@@ -4,9 +4,9 @@ export DEBIAN_FRONTEND=noninteractive
 export APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=DontWarn
 
 cat >>/etc/hosts<<EOF
-172.42.42.100 master.dojot.com.br master
-172.42.42.101 worker1.dojot.com.br worker1
-172.42.42.102 worker2.dojot.com.br worker2
+192.168.33.10 master.dojot.com.br master
+192.168.33.11 worker1.dojot.com.br worker1
+192.168.33.12 worker2.dojot.com.br worker2
 EOF
 
 apt-get update && apt-get install -y apt-transport-https ca-certificates curl software-properties-common selinux-utils
