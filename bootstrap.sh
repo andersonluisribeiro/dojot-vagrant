@@ -18,7 +18,10 @@ add-apt-repository \
   $(lsb_release -cs) \
   stable"
 
-apt-get update && apt-get install -y docker-ce=18.06.2~ce~3-0~ubuntu
+apt-get update && apt-get install -y \
+  containerd.io=1.2.10-3 \
+  docker-ce=5:19.03.4~3-0~ubuntu-$(lsb_release -cs) \
+  docker-ce-cli=5:19.03.4~3-0~ubuntu-$(lsb_release -cs)
 
 cat > /etc/docker/daemon.json <<EOF
 {
@@ -36,7 +39,6 @@ systemctl daemon-reload
 systemctl restart docker
 
 cat >>/etc/sysctl.d/kubernetes.conf<<EOF
-net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 EOF
 sysctl --system >/dev/null 2>&1
@@ -51,10 +53,10 @@ deb https://apt.kubernetes.io/ kubernetes-xenial main
 EOF
 
 apt-get update
-apt-get install -y kubelet kubeadm kubectl
+apt-get install -y kubelet=1.15.3-00 kubeadm=1.15.3-00 kubectl=1.15.3-00
 apt-mark hold kubelet kubeadm kubectl
 
-systemctl enable kubelet >/dev/null 2>&1
-systemctl start kubelet >/dev/null 2>&1
+# systemctl enable kubelet >/dev/null 2>&1
+# systemctl start kubelet >/dev/null 2>&1
 
 echo "export TERM=xterm" >> /etc/bashrc
